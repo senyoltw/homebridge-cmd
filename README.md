@@ -15,11 +15,10 @@ Configuration sample:
  ```
 "accessories": [
         {
-            "accessory": "Http",
-            "name": "irkit control device",
-            "irkit_url": "http://irkitxxxxx.local/messages",
-            "on_form": {"format":"raw","freq":38,"data":[]},
-            "off_form": {"format":"raw","freq":38,"data":[]},
+            "accessory": "cmd",
+            "name": "プレイステーション",
+            "on_cmd": "ps4-waker",
+            "off_cmd": "ps4-waker standby",
         }
     ]
 
