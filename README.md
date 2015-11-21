@@ -18,7 +18,7 @@ Configuration sample:
             "accessory": "cmd",
             "name": "プレイステーション",
             "on_cmd": "ps4-waker",
-            "off_cmd": "ps4-waker standby",
+            "off_cmd": "ps4-waker standby"
         }
     ]
 
