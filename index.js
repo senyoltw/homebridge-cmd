@@ -38,9 +38,8 @@ cmdAccessory.prototype = {
 
 		this.cmdRequest(cmd, function(error, stdout, stderr) {
 			if (error) {
-				this.log('power function failed: %s', error.message);
+				this.log('power function failed: %s', stderr);
 				callback(error);
-				this.log(stderr);
 			} else {
 				this.log('power function succeeded!');
 				this.log(stdout);
