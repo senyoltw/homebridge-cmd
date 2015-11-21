@@ -1,26 +1,25 @@
 var Service, Characteristic;
-var request = require("request");
+var exec = require("child_process").exec;
 
 module.exports = function(homebridge){
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  homebridge.registerAccessory("homebridge-http", "Http", HttpAccessory);
+  homebridge.registerAccessory("homebridge-cmd", "cmd", cmdAccessory);
 }
 
 
-function HttpAccessory(log, config) {
+function cmdAccessory(log, config) {
 	this.log = log;
 
 	// url info
-	this.irkit_url    = config["irkit_url"];
-	this.on_form   = config["on_form"];
-	this.off_form  = config["off_form"];
+	this.on_cmd   = config["on_cmd"];
+	this.off_cmd  = config["off_cmd"];
 	this.name = config["name"];
 }
 
-HttpAccessory.prototype = {
+cmdAccessory.prototype = {
 
-	httpRequest: function(url, form, callback) {
+	cmdRequest: function(url, form, callback) {
 		request({
 				url: url,
 				method: 'POST',
@@ -68,9 +67,9 @@ HttpAccessory.prototype = {
 		var informationService = new Service.AccessoryInformation();
 
 		informationService
-			.setCharacteristic(Characteristic.Manufacturer, "HTTP Manufacturer")
-			.setCharacteristic(Characteristic.Model, "HTTP Model")
-			.setCharacteristic(Characteristic.SerialNumber, "HTTP Serial Number");
+			.setCharacteristic(Characteristic.Manufacturer, "cmd Manufacturer")
+			.setCharacteristic(Characteristic.Model, "cmd Model")
+			.setCharacteristic(Characteristic.SerialNumber, "cmd Serial Number");
 
 		var switchService = new Service.Switch(this.name);
 
