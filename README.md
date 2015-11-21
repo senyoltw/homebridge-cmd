@@ -1,18 +1,12 @@
-# homebridge-http for IRKit
+# homebridge-cmd
 
-Supports IRKit on HomeBridge Platform(base on homebridge-http)  
-IRKitをSiri(Homekit)で操作するやつ。オン/オフの切り替えが可能になります。  
-エアコン、テレビ、照明のオンオフができようになるでしょう(多分)
+Supports cmd on HomeBridge Platform(base on homebridge-http)  
 
 # Installation
 
 1. Install homebridge using: npm install -g homebridge
-2. Install this plugin using: npm install -g https://github.com/senyoltw/homebridge-http
+2. Install this plugin using: npm install -g https://github.com/senyoltw/homebridge-cmd
 3. Update your configuration file. See sample-config.json in this repository for a sample. 
-
-1. homebridgeをインストール : npm install -g homebridge
-2. このプラグインをインストール : npm install -g https://github.com/senyoltw/homebridge-http
-3. .homebridge/config.json をしたの書き方を参考に編集
 
 # Configuration
 
