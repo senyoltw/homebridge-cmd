@@ -1,0 +1,22 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "CD:22:3D:E3:CE:30",
+        "port": 51826,
+        "pin": "031-45-156"
+    },
+    
+    "description": "The Onion!",
+
+    "platforms": [],
+
+    "accessories": [
+        {
+            "accessory": "Http",
+            "name": "irkit control",
+            "irkit_url": "http://irkitxxxxx.local/messages",
+            "on_form": {"format":"raw","freq":38,"data":[]},
+            "off_form": {"format":"raw","freq":38,"data":[]},
+        }
+    ]
+}
