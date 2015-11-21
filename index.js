@@ -19,36 +19,31 @@ function cmdAccessory(log, config) {
 
 cmdAccessory.prototype = {
 
-	cmdRequest: function(url, form, callback) {
-		request({
-				url: url,
-				method: 'POST',
-				form: JSON.stringify(form)
-			},
-			function(error, response, body) {
-				callback(error, response, body)
+	cmdRequest: function(cmd, callback) {
+		exec(cmd,function(error, stdout, stderr) {
+				callback(error, stdout, stderr)
 			})
 	},
 
 	setPowerState: function(powerOn, callback) {
-		var form;
+		var cmd;
 
 		if (powerOn) {
-			form = this.on_form;
+			cmd = this.on_cmd;
 			this.log("Setting power state to on");
 		} else {
-			form = this.off_form;
+			cmd = this.off_cmd;
 			this.log("Setting power state to off");
 		}
 
-		this.httpRequest(this.irkit_url, form, function(error, response, responseBody) {
+		this.cmdRequest(cmd, function(error, stdout, stderr) {
 			if (error) {
-				this.log('HTTP power function failed: %s', error.message);
+				this.log('power function failed: %s', error.message);
 				callback(error);
+				this.log(stderr);
 			} else {
-				this.log('HTTP power function succeeded!');
-				this.log(response);
-				this.log(responseBody);
+				this.log('power function succeeded!');
+				this.log(stdout);
 	
 				callback();
 			}
