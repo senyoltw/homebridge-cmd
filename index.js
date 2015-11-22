@@ -4,11 +4,11 @@ var exec = require("child_process").exec;
 module.exports = function(homebridge){
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  homebridge.registerAccessory("homebridge-cmd", "cmd", cmdAccessory);
+  homebridge.registerAccessory("homebridge-cmd", "CMD", CmdAccessory);
 }
 
 
-function cmdAccessory(log, config) {
+function CmdAccessory(log, config) {
 	this.log = log;
 
 	// url info
@@ -17,7 +17,7 @@ function cmdAccessory(log, config) {
 	this.name = config["name"];
 }
 
-cmdAccessory.prototype = {
+CmdAccessory.prototype = {
 
 	cmdRequest: function(cmd, callback) {
 		exec(cmd,function(error, stdout, stderr) {
