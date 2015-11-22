@@ -15,7 +15,7 @@ Configuration sample:
  ```
 "accessories": [
         {
-            "accessory": "cmd",
+            "accessory": "CMD",
             "name": "プレイステーション",
             "on_cmd": "ps4-waker",
             "off_cmd": "ps4-waker standby"
