@@ -11,10 +11,10 @@
     "homebridge": ">=0.2.0"
   },
   "author": {
-    "name": "Adrian Rudman"
+    "name": "senyoltw"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rudders/homebridge-http.git"
+    "url": "git://github.com/senyoltw/homebridge-cmd"
   }
 }
