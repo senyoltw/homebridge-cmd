@@ -1,11 +1,11 @@
 # homebridge-cmd
 
-Supports cmd on HomeBridge Platform(base on homebridge-http)  
+homebridge-plugin for Your PC Command with Apple-Homekit.(by node.js child_process.exec())
 
 # Installation
 
-1. Install homebridge using: npm install -g homebridge
-2. Install this plugin using: npm install -g https://github.com/senyoltw/homebridge-cmd
+1. Install homebridge using: sudo npm install -g homebridge
+2. Install this plugin using: sudo npm install -g homebridge-cmd
 3. Update your configuration file. See sample-config.json in this repository for a sample. 
 
 # Configuration
@@ -16,7 +16,7 @@ Configuration sample:
 "accessories": [
         {
             "accessory": "CMD",
-            "name": "プレイステーション",
+            "name": "PlayStation",
             "on_cmd": "ps4-waker",
             "off_cmd": "ps4-waker standby"
         }
