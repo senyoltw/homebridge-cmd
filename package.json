@@ -1,7 +1,7 @@
 {
   "name": "homebridge-cmd",
-  "version": "0.0.2",
-  "description": "https plugin for homebridge: https://github.com/nfarina/homebridge",
+  "version": "0.0.3",
+  "description": "node.js child_process plugin for homebridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
     "homebridge-plugin"
