@@ -1,21 +1,26 @@
 {
     "bridge": {
         "name": "Homebridge",
-        "username": "CD:22:3D:E3:CE:30",
+        "username": "CB:22:3D:E3:CE:30",
         "port": 51826,
-        "pin": "031-45-156"
+        "pin": "000-11-222"
     },
-    
-    "description": "The Onion!",
+
+    "description": "My homebridge server",
 
     "platforms": [],
 
-    "accessories": [
-        {
-            "accessory": "CMD",
-            "name": "プレイステーション",
-            "on_cmd": "ps4-waker",
-            "off_cmd": "ps4-waker standby"
-        }
-    ]
+    "accessories": [{
+        "accessory": "RFOutlet",
+        "name": "Fan",
+        "path": "/Apps/outlets/codesend",
+        "type": "Fan",
+        "rf_on": 4480259,
+        "rf_off": 4480268,
+        "pin": "",
+        "pulselength": "",
+        "manufacturer": "Lasko",
+        "model": "Weather Shield Box Fan",
+        "serial": ""
+    }]
 }

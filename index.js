@@ -1,75 +1,112 @@
 var Service, Characteristic;
 var exec = require("child_process").exec;
 
-module.exports = function(homebridge){
-  Service = homebridge.hap.Service;
-  Characteristic = homebridge.hap.Characteristic;
-  homebridge.registerAccessory("homebridge-cmd", "CMD", CmdAccessory);
+module.exports = function(homebridge) {
+    Service = homebridge.hap.Service;
+    Characteristic = homebridge.hap.Characteristic;
+    homebridge.registerAccessory("homebridge-rfoutlets", "RFOutlet", RFOutletAccessory);
 }
 
+function RFOutletAccessory(log, config) {
+    this.log = log;
 
-function CmdAccessory(log, config) {
-	this.log = log;
+    // url info
+    this.name = config["name"];
+    this.path = config["path"];
+    this.type = config["type"];
 
-	// url info
-	this.on_cmd   = config["on_cmd"];
-	this.off_cmd  = config["off_cmd"];
-	this.name = config["name"];
+    this.rf_on = config["rf_on"];
+    this.rf_off = config["rf_off"];
+    this.pin = config["pin"];
+    this.pulselength = config["pulselength"];
+
+    this.manufacturer = config["manufacturer"];
+    this.model = config["model"];
+    this.serial = config["serial"];
 }
 
-CmdAccessory.prototype = {
+RFOutletAccessory.prototype = {
+    cmdRequest: function(cmd, callback) {
+        exec(cmd, function(error, stdout, stderr) {
+            callback(error, stdout, stderr)
+        })
+    },
 
-	cmdRequest: function(cmd, callback) {
-		exec(cmd,function(error, stdout, stderr) {
-				callback(error, stdout, stderr)
-			})
-	},
+    setPowerState: function(powerOn, callback) {
+        var cmd;
+        var path = this.path;
 
-	setPowerState: function(powerOn, callback) {
-		var cmd;
+        if (path) {
+            cmd = "sudo " + path + " ";
+        } else {
+            cmd = "sudo codesend "
+        }
 
-		if (powerOn) {
-			cmd = this.on_cmd;
-			this.log("Setting power state to on");
-		} else {
-			cmd = this.off_cmd;
-			this.log("Setting power state to off");
-		}
+        var pin = this.pin;
+        var pulselength = this.pulselength;
 
-		this.cmdRequest(cmd, function(error, stdout, stderr) {
-			if (error) {
-				this.log('power function failed: %s', stderr);
-				callback(error);
-			} else {
-				this.log('power function succeeded!');
-				callback();
-				this.log(stdout);
-			}
-		}.bind(this));
-	},
+        if (powerOn) {
+            cmd = cmd + this.rf_on;
+            this.log("Turning " + this.name + " on");
+        } else {
+            cmd = cmd + this.rf_off;
+            this.log("Turning " + this.name + " off");
+        }
 
-	identify: function(callback) {
-		this.log("Identify requested!");
-		callback(); // success
-	},
+        if (pin) {
+            cmd = cmd + " -p " + pin;
+        }
+        if (pulselength) {
+            cmd = cmd + " -l " + pulselength;
+        }
 
-	getServices: function() {
+        this.cmdRequest(cmd, function(error, stdout, stderr) {
+            if (error) {
+                this.log('Error toggling outlet state: %s', stderr);
+                callback(error);
+            } else {
+                //this.log('power function succeeded!');
+                callback();
+                this.log(stdout);
+            }
+        }.bind(this));
+    },
 
-		// you can OPTIONALLY create an information service if you wish to override
-		// the default values for things like serial number, model, etc.
-		var informationService = new Service.AccessoryInformation();
+    identify: function(callback) {
+        this.log("Identify requested!");
+        callback(); // success
+    },
 
-		informationService
-			.setCharacteristic(Characteristic.Manufacturer, "cmd Manufacturer")
-			.setCharacteristic(Characteristic.Model, "cmd Model")
-			.setCharacteristic(Characteristic.SerialNumber, "cmd Serial Number");
+    getServices: function() {
+        // you can OPTIONALLY create an information service if you wish to override
+        // the default values for things like serial number, model, etc.
+        var informationService = new Service.AccessoryInformation();
 
-		var switchService = new Service.Switch(this.name);
+        informationService
+            .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+            .setCharacteristic(Characteristic.Model, this.model)
+            .setCharacteristic(Characteristic.SerialNumber, this.serial);
 
-		switchService
-			.getCharacteristic(Characteristic.On)
-			.on('set', this.setPowerState.bind(this));
+        var outletService;
 
-		return [switchService];
-	}
+        switch (this.type) {
+            case "Switch":
+                this.outletService = new Service.Switch(this.name);
+                break;
+            case "Light":
+                this.outletService = new Service.Lightbulb(this.name);
+                break;
+            case "Fan":
+                this.outletService = new Service.Fan(this.name);
+                break;
+            default:
+                this.outletService = new Service.Switch(this.name);
+        }
+
+        this.outletService
+            .getCharacteristic(Characteristic.On)
+            .on('set', this.setPowerState.bind(this));
+
+        return [informationService, this.outletService];
+    }
 };

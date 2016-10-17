@@ -1,7 +1,7 @@
 {
-  "name": "homebridge-cmd",
-  "version": "0.0.3",
-  "description": "node.js child_process plugin for homebridge: https://github.com/nfarina/homebridge",
+  "name": "homebridge-rfoutlets",
+  "version": "0.0.1",
+  "description": "RF (433MHz) outlet remote control plugin for homebridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
     "homebridge-plugin"
@@ -11,10 +11,10 @@
     "homebridge": ">=0.2.0"
   },
   "author": {
-    "name": "senyoltw"
+    "name": "wstameris"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/senyoltw/homebridge-cmd"
+    "url": "git://github.com/wstameris/homebridge-rfoutlets"
   }
 }
