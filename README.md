@@ -1,6 +1,6 @@
 # homebridge-pirfoutlets
 
-Homebridge  plugin which is purpose-built for controlling 433MHz radio frequency outlets which can be purchased inexpensively. (i.e. xyz). Homebridge maintains state information, so you can always know if you left that lamp on.
+Homebridge  plugin which is purpose-built for controlling 433MHz radio frequency outlets which can be purchased inexpensively. (i.e. [these](https://www.amazon.com/Etekcity-Wireless-Electrical-Household-Appliances/dp/B00DQELHBS "Etekcity Wireless Outlets")). Homebridge maintains state information, so you can always know if you left that lamp on.
 
 # Installation
 
