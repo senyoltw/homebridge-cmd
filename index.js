@@ -1,85 +1,78 @@
-var Service, Characteristic;
-var exec = require("child_process").exec;
+var Service, Characteristic, limiter, cmdBase;
+var exec = require("child_process").exec,
+    RateLimiter = require('limiter').RateLimiter;
 
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
-    homebridge.registerAccessory("homebridge-rfoutlets", "RFOutlet", RFOutletAccessory);
+    limiter = new RateLimiter(1, 200); //limit requests to one per 200ms
+    homebridge.registerAccessory("homebridge-rfoutlets",
+        "RFOutlet",
+        RFOutletAccessory);
 }
 
 function RFOutletAccessory(log, config) {
     this.log = log;
 
-    // url info
+    //Accessory information
     this.name = config["name"];
-    this.path = config["path"];
     this.type = config["type"];
-
-    this.rf_on = config["rf_on"];
-    this.rf_off = config["rf_off"];
-    this.pin = config["pin"];
-    this.pulselength = config["pulselength"];
-
     this.manufacturer = config["manufacturer"];
     this.model = config["model"];
     this.serial = config["serial"];
+
+    //RF transmit inforamtion
+    this.rf_on = config["rf_on"];
+    this.rf_off = config["rf_off"];
+
+    if (config["pulselength"]) {
+        this.pulselength = config["pulselength"];
+    } else {
+        this.pulselength = 189; //Default to a pulse length of 189
+    }
+
+    if (config["pin"]) {
+        this.pin = config["pin"];
+    } else {
+        this.pin = 0; //Default to GPIO pin 0
+    }
+
+    cmdBase = "sudo " + //the codesend executable requires root
+        __dirname + //module directory
+        "/codesend -p " + this.pin + " -l " + this.pulselength + " ";
 }
 
 RFOutletAccessory.prototype = {
-    cmdRequest: function(cmd, callback) {
-        exec(cmd, function(error, stdout, stderr) {
-            callback(error, stdout, stderr)
-        })
-    },
-
     setPowerState: function(powerOn, callback) {
+        var state;
         var cmd;
-        var path = this.path;
-
-        if (path) {
-            cmd = "sudo " + path + " ";
-        } else {
-            cmd = "sudo codesend "
-        }
-
-        var pin = this.pin;
-        var pulselength = this.pulselength;
 
         if (powerOn) {
-            cmd = cmd + this.rf_on;
-            this.log("Turning " + this.name + " on");
+            cmd = cmdBase + this.rf_on;
+            state = "on";
         } else {
-            cmd = cmd + this.rf_off;
-            this.log("Turning " + this.name + " off");
+            cmd = cmdBase + this.rf_off;
+            state = "off";
         }
 
-        if (pin) {
-            cmd = cmd + " -p " + pin;
-        }
-        if (pulselength) {
-            cmd = cmd + " -l " + pulselength;
-        }
+        this.log("Turning " + this.name + " " + state);
 
-        this.cmdRequest(cmd, function(error, stdout, stderr) {
-            if (error) {
-                this.log('Error toggling outlet state: %s', stderr);
-                callback(error);
-            } else {
-                //this.log('power function succeeded!');
+        limiter.removeTokens(1, function() {
+            exec(cmd, function(error, stdout, stderr) {
+                if (error) {
+                    console.log(error);
+                }
                 callback();
-                this.log(stdout);
-            }
-        }.bind(this));
+            })
+        });
     },
 
     identify: function(callback) {
-        this.log("Identify requested!");
-        callback(); // success
+        this.log("HomeKit identify requested");
+        callback();
     },
 
     getServices: function() {
-        // you can OPTIONALLY create an information service if you wish to override
-        // the default values for things like serial number, model, etc.
         var informationService = new Service.AccessoryInformation();
 
         informationService

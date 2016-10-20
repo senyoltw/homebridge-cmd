@@ -12,15 +12,14 @@
 
     "accessories": [{
         "accessory": "RFOutlet",
-        "name": "Fan",
-        "path": "/Apps/outlets/codesend",
+        "name": "Window Fan",
         "type": "Fan",
-        "rf_on": 4480259,
-        "rf_off": 4480268,
-        "pin": "",
-        "pulselength": "",
         "manufacturer": "Lasko",
         "model": "Weather Shield Box Fan",
-        "serial": ""
+        "serial": " ",
+        "rf_on": 4480259,
+        "rf_off": 4480268,
+        "pulselength": "",
+        "pin": ""
     }]
 }

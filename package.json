@@ -1,20 +1,23 @@
 {
-  "name": "homebridge-rfoutlets",
-  "version": "0.0.1",
-  "description": "RF (433MHz) outlet remote control plugin for homebridge: https://github.com/nfarina/homebridge",
-  "license": "ISC",
-  "keywords": [
-    "homebridge-plugin"
-  ],
-  "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.2.0"
-  },
-  "author": {
-    "name": "wstameris"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/wstameris/homebridge-rfoutlets"
-  }
+    "name": "homebridge-rfoutlets",
+    "version": "0.1.0",
+    "description": "RF (433MHz) outlet remote control plugin for homebridge: https://github.com/nfarina/homebridge",
+    "license": "(MIT OR ISC)",
+    "keywords": [
+        "homebridge-plugin", "433", "433MHz", "Raspberry", "Pi", "rf"
+    ],
+    "engines": {
+        "node": ">=0.12.0",
+        "homebridge": ">=0.2.0"
+    },
+    "author": {
+        "name": "wstameris"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/wstameris/homebridge-rfoutlets"
+    },
+    "dependencies": {
+        "limiter": "1.x"
+    }
 }
