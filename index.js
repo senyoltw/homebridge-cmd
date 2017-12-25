@@ -5,7 +5,7 @@ var exec = require("child_process").exec,
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
-    limiter = new RateLimiter(1, 200); //limit requests to one per 200ms
+    limiter = new RateLimiter(1, 700); //limit requests to one per 200ms
     homebridge.registerAccessory("homebridge-rfoutlets",
         "RFOutlet",
         RFOutletAccessory);
